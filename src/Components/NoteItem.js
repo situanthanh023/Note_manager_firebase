@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 function NoteItem(props) {
     const twoActionButton = () =>{
-        props.changEditStatus();
+        props.changeEditStatus();
         props.getEditStatus(props.note);
     }
     return (
@@ -15,7 +15,7 @@ function NoteItem(props) {
                 </a>
                 <div className="btn-group float-right">
                     <button type="button" className="btn btn-outline-info" onClick = {() =>{twoActionButton()}}> Sửa </button>
-                    <button type="button" className="btn btn-outline-secondary"> Xóa </button>
+                    <button type="button" className="btn btn-outline-secondary" onClick = {(delid)=>{props.deleteData(props.note)}}> Xóa </button>
                 </div>
                 </h5>
             </div>
@@ -29,18 +29,24 @@ function NoteItem(props) {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        editStatus: state.isEdit
-
+        editStatus: state.isEdit,
+        addStatus: state.isAdd
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        changEditStatus: () => {
+        changeEditStatus: () => {
           dispatch({type:"CHANGE_EDIT_STATUS"})
         },
         getEditStatus: (editObject) => {
             dispatch({type:"GET_EDIT_DATA",editObject})
-          }
+          },
+        deleteData: (delid) => {
+        dispatch({type:"DELETE_DATA",delid})
+        },
+        changeAddStatus: () => {
+            dispatch({type:"CHANGE_EDIT_STATUS"})
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NoteItem)

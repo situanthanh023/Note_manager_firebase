@@ -3,7 +3,8 @@ import {nodeData} from '../firebaseConnect';
 var redux = require('redux');
 const noteInitialState = {
     isEdit : false,
-    editItem:{}
+    editItem:{},
+    isAdd: false
 }
 const allReducer = (state = noteInitialState, action) => {
     switch (action.type) {
@@ -13,11 +14,22 @@ const allReducer = (state = noteInitialState, action) => {
             return state
         case "CHANGE_EDIT_STATUS":
             return {...state,isEdit:!state.isEdit}
+        case "CHANGE_ADD_STATUS":
+        return {...state,isAdd:!state.isAdd}
         case "GET_EDIT_DATA":
             return {...state,editItem:action.editObject}
         case "EDIT_DATA":
             console.log('dl' + JSON.stringify(action.getItem));
+            nodeData.child(action.getItem.id).update({
+                title:action.getItem.title,
+                noteContent:action.getItem.noteContent
+            })
+            console.log('thanh cmnc')
             return {...state,editItem:{}}
+        case "DELETE_DATA":
+            console.log("nhận duoc action" + JSON.stringify(action.delid))
+            nodeData.child(action.delid.id).remove();
+            return state
         default:
             return state
     }

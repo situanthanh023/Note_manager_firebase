@@ -35,6 +35,7 @@ function NoteForm(props) {
             editObject.title = noteTitle;
             editObject.noteContent = noteContent;
             props.editDataStore(editObject);
+            props.changeEditStatus();
             console.log("dang sua du lieu")
         }else{
             var item = {};
@@ -45,9 +46,16 @@ function NoteForm(props) {
             props.addDataStore(item);
         }
     }
+    const printTitle = () =>{
+        if(props.addStatus){
+            return <h3>Thêm mới</h3>
+        }else{
+            return <h3>Sửa ghi chú</h3>
+        }
+    }
     return (
         <div className="col-4">
-            <h3>Sửa nội dung Note</h3>
+            {printTitle()}
             <div className="form-group">
                 <label htmlFor="noteTitle">Tiêu đề note</label>
                 <input defaultValue ={props.editItem.title} type="text" onChange = {(event)=>{isChangeTitle(event)}} name="noteTitle" id="noteTitle" className="form-control" placeholder="Tiêu đề note" aria-describedby="helpIdNoteTitle" />
@@ -65,7 +73,9 @@ function NoteForm(props) {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        editItem: state.editItem
+        editStatus: state.isEdit,
+        editItem: state.editItem,
+        addStatus:state.isAdd
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -75,6 +85,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         editDataStore: (getItem) => {
             dispatch({type:"EDIT_DATA",getItem})
+        },
+        changeEditStatus: () => {
+            dispatch({type:"CHANGE_EDIT_STATUS"})
         }
     }
 }

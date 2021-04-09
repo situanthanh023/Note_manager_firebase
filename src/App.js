@@ -30,7 +30,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    changEditStatus: () => {
+    changeEditStatus: () => {
       dispatch({type:"CHANGE_EDIT_STATUS"})
     }
   }
