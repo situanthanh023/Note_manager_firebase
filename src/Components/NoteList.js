@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {nodeData} from '../firebaseConnect';
+import NoteItem from './NoteItem';
 
-function NoteList() {
+function NoteList(props) {
     const [dataFirebase,setDataFirebase] = useState([]);
     useEffect( () =>{
         nodeData.on("value", (notes) =>{
@@ -18,43 +19,26 @@ function NoteList() {
         });
         setDataFirebase(arrayData);
     })
-    }) 
+    },[]) 
     const getData = () =>{
-        console.log(dataFirebase);    
-        //console.log(notes.val());
+        if(dataFirebase){
+            return dataFirebase.map((value,key)=>{
+                return (
+                    <NoteItem
+                    key = {key} 
+                    stt = {key}
+                    note = {value}
+                    noteTitle = {value.title}
+                    noteContent = {value.noteContent}
+                    />
+                )
+            })
+        }
     }
     return (
         <div className="col">
         <div id="noteList" role="tablist" aria-multiselectable="true">
-            <div className="card">
-            <div className="card-header" role="tab" id="note1">
-                <h5 className="mb-0">
-                <a data-toggle="collapse" data-parent="#noteList" href="#noteContent1" aria-expanded="true" aria-controls="noteContent1">
-                    Ghi chus ngay 31/3/2021
-                </a>
-                </h5>
-            </div>
-            <div id="noteContent1" className="collapse in" role="tabpanel" aria-labelledby="note1">
-                <div className="card-body">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
-                sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec,
-                vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
-                elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor
-                eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis,
-                feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum.
-                Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
-                Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam
-                semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel,
-                luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec
-                vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget
-                eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales
-                sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
-                </div>
-            </div>
-            </div>
+            {getData()}
             <div className="card">
             <div className="card-header" role="tab" id="note2">
                 <h5 className="mb-0">
